@@ -1,0 +1,25 @@
+#include <iostream.h>
+void main()
+{
+char ch;
+int nch=0,nword=0,nline=0;//计数初始化0
+bool isword=0;
+cout<<"请输入一段文本（无空行）："<<endl;
+do{
+ch=cin.get();//当且仅当ctrl+z时文本结束输入
+if(ch=='/n') nline++;//回车时行数加一
+if(ch!=' '&&ch!='/t'&&ch!='/n'&&ch!=EOF)//如果遇到非间隔符……
+{
+
+if(!isword)//如果isword=0
+nword++;//单词数加一
+nch++;//字符数加一
+isword=1;
+}
+else
+isword=0;
+}while(ch!=EOF);//当未输入ctrl+z时
+cout<<"行数："<<nline<<endl;
+cout<<"单词数："<<nword<<endl;
+cout<<"字符数："<<nch<<endl;
+}
