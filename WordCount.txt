@@ -1,25 +1,59 @@
-#include <iostream.h>
-void main()
-{
-char ch;
-int nch=0,nword=0,nline=0;//¼ÆÊý³õÊ¼»¯0
-bool isword=0;
-cout<<"ÇëÊäÈëÒ»¶ÎÎÄ±¾£¨ÎÞ¿ÕÐÐ£©£º"<<endl;
-do{
-ch=cin.get();//µ±ÇÒ½öµ±ctrl+zÊ±ÎÄ±¾½áÊøÊäÈë
-if(ch=='/n') nline++;//»Ø³µÊ±ÐÐÊý¼ÓÒ»
-if(ch!=' '&&ch!='/t'&&ch!='/n'&&ch!=EOF)//Èç¹ûÓöµ½·Ç¼ä¸ô·û¡­¡­
-{
 
-if(!isword)//Èç¹ûisword=0
-nword++;//µ¥´ÊÊý¼ÓÒ»
-nch++;//×Ö·ûÊý¼ÓÒ»
-isword=1;
+#include<iostream>
+#include<fstream>
+#include<string>
+ 
+using namespace std;
+ 
+bool isnum_str(char str)  //åˆ¤æ–­æ˜¯å¦æ˜¯å­—ç¬¦
+{
+  if((str >= 'A' && str <= 'z'))
+	  return true;
+  else
+	  return false;
 }
-else
-isword=0;
-}while(ch!=EOF);//µ±Î´ÊäÈëctrl+zÊ±
-cout<<"ÐÐÊý£º"<<nline<<endl;
-cout<<"µ¥´ÊÊý£º"<<nword<<endl;
-cout<<"×Ö·ûÊý£º"<<nch<<endl;
+ 
+void count(fstream &outfile, int *cnt )  //ç»Ÿè®¡å‡½æ•°
+{ char str[256];
+  while(outfile.getline(str,256))
+  { 
+    int tmp = 0;
+    
+    for(int i = 0; i < strlen(str); i++)
+	{
+	  if(str[i] == ' ' || str[i] == '.' || str[i] == ',' || str[i] == '?' || str[i] == '!')
+		  cnt[1]++;            //ç»Ÿè®¡å•è¯æ•°
+	  
+	  if(isnum_str(str[i]))
+	  { cnt[0]++;   tmp++;}    //ç»Ÿè®¡å­—ç¬¦æ•°ï¼Œtmpå±€éƒ¨å˜é‡ç”¨æ¥åŒºåˆ†æ˜¯ä¸æ˜¯ä¸€ä¸ªç©ºè¡Œã€‚
+	}
+	
+	if(tmp != 0)
+	cnt[2]++;                 //ç»Ÿè®¡è¡Œæ•°
+	tmp = 0;
+  }
+    
+ return ;
 }
+ 
+int main()
+{
+    char filename[256];
+    int cnt[3] = {0};
+    
+    
+    cout<<"please input your filename:"<<endl; //è¾“å…¥è¦ç»Ÿè®¡çš„æ–‡æœ¬çš„ç»å¯¹è·¯å¾„
+    cin.getline(filename,256);
+	
+    fstream outfile(filename,ios::in);
+    count(outfile,cnt);
+	cout<<"characters: "<<cnt[0]<<endl;
+	cout<<"words:"<<cnt[1]<<endl;
+	cout<<"lines:"<<cnt[2]<<endl;
+    outfile.close();
+    system("pause");
+  return 0;    
+ 
+system("pause");
+return 0;
+ }
